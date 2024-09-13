@@ -28,12 +28,12 @@ const findOneById = async (commentId) => {
 }
 
 const findOneByUserId = async (userId, commentId) =>{
-    return await User.findOne({
+    return await Comment.findOne({
         where: {
             userId: userId,
             id: commentId
         },
-        attributes: ['id', 'userId', 'content', 'createdAt', 'updatedAt'],
+        attributes: [ 'userId', 'content', 'createdAt', 'updatedAt'],
         include: [{
             model: User,
             attributes: ['username', 'email'] 

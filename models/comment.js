@@ -14,15 +14,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Comment.init({
-    comment_id: DataTypes.INTEGER,
+    comment_id: {
+      type:DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     video_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
     username: DataTypes.STRING,
     content: DataTypes.TEXT,
-    created_at: DataTypes.DATE
+    // created_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Comment',
+    tableName: 'Comment',
+    timestamps: false
   });
   return Comment;
 };
+

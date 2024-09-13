@@ -1,11 +1,11 @@
-const {commentRepository, findCommentExist} = require('../repository/comment.repository');
+const commentRepository = require('../repository/comment.repository');
+const index = require('../../models/index')
 const {Comment} = require('../../models/comment');
 const {Op, where} = require('sequelize');
 const {v4: uuidv4} = require('uuid');
 const {ResponseError} = require('../error/response.error')
 const { createCommentSchema, updateCommentSchema, getCommentValidation } = require('../joi/comment.schema');
 const {validate} = require('../joi/joi.validate');
-const comment = require('../../models/comment');
 const { CommentResponse } = require('../response/comment.response');
 
 
@@ -37,10 +37,10 @@ const create = async (request) => {
     const comment = validate(createCommentSchema, request);
     console.log(comment)
     // await findCommentExist(comment.id);
-    await findCommentExist({ username: comment.username, content: comment.content});
+    await commentExist({ username: comment.username, content: comment.content});
     // comment.id = uuidv4();
     // await userExist({ username: user.username, email: user.email });
-    return commentRepository.create(comment)
+    await commentRepository.create(comment);
     // await commentRepository.create(comment);
     // const createdComment = await commentRepository.create(comment);
     // return await commentRepository.findOneInactiveById(createdComment.id)
@@ -84,5 +84,4 @@ module.exports = {
     update,
     remove,
     list,
-    commentExist
 };

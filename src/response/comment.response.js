@@ -1,5 +1,5 @@
 class CommentResponse {
-    constructor(comment_id, video_id, user_id, content, createdAt, updatedAt) {
+    constructor(comment_id, video_id, user_id, content) {
         this.comment_id = comment_id;
         this.video_id = video_id;
         this.user_id = user_id;
