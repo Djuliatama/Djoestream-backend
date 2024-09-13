@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     comment_id: DataTypes.INTEGER,
     video_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
+    username: DataTypes.STRING,
     content: DataTypes.TEXT,
     created_at: DataTypes.DATE
   }, {

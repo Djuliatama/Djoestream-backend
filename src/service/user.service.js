@@ -92,4 +92,5 @@ module.exports = {
     login,
     logout,
     get,
+    userExist
 }

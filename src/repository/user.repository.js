@@ -1,4 +1,5 @@
 const { User } = require('../../models');
+const { Op } = require('sequelize');
 
 const findOneById = async (user_id) => {
     return await User.findOne({
@@ -38,5 +39,5 @@ module.exports = {
     findOneById,
     findOneByUsername,
     findUserExist,
-    create
+    create,
 }

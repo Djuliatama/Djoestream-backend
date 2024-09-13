@@ -1,4 +1,4 @@
-const {commentRepository} = require('../repository/comment.repository');
+const {commentRepository, findCommentExist} = require('../repository/comment.repository');
 const {Comment} = require('../../models/comment');
 const {Op, where} = require('sequelize');
 const {v4: uuidv4} = require('uuid');
@@ -6,14 +6,44 @@ const {ResponseError} = require('../error/response.error')
 const { createCommentSchema, updateCommentSchema, getCommentValidation } = require('../joi/comment.schema');
 const {validate} = require('../joi/joi.validate');
 const comment = require('../../models/comment');
+const { CommentResponse } = require('../response/comment.response');
+
+
+const mapToCommentResponse = (commentData) => {
+    return new CommentResponse (
+        this.comment_id = comment_id,
+        this.video_id = video_id,
+        this.user_id = user_id,
+        this.content = content,
+    )
+}
+
+// const userExist = async ({ username, email }) => {
+
+//     const user = await userRepository.findUserExist({ username, email });
+//     if (user) {
+//         throw new ResponseError(409, "Username already exist")
+//     }
+// }
+
+const commentExist = async ({ username, content}) => {
+    const comment = await commentRepository.findCommentExist({ username, content});
+    if (comment) {
+        throw new ResponseError(409, 'Comment already exist')
+    }
+}
 
 const create = async (request) => {
     const comment = validate(createCommentSchema, request);
-    await existByCommentId(comment.id);
-    comment.id = uuidv4();
-
-    const createdComment = await commentRepository.create(comment);
-    return await commentRepository.findOneInactiveById(createdComment.id)
+    console.log(comment)
+    // await findCommentExist(comment.id);
+    await findCommentExist({ username: comment.username, content: comment.content});
+    // comment.id = uuidv4();
+    // await userExist({ username: user.username, email: user.email });
+    return commentRepository.create(comment)
+    // await commentRepository.create(comment);
+    // const createdComment = await commentRepository.create(comment);
+    // return await commentRepository.findOneInactiveById(createdComment.id)
 };
 
 
@@ -44,8 +74,15 @@ const remove = async (userId, commentId) => {
     return { success: true };
 }
 
+const list = async (user_id) => {
+    const commentData = await commentRepository.findAllWitCommentByUserId(user_id);
+     return commentData.map( commentData => mapToCommentResponse(commentData));
+}
+
 module.exports = {
     create,
     update,
     remove,
+    list,
+    commentExist
 };

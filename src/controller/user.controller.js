@@ -34,15 +34,6 @@ const logout = async (req, res, next) => {
 }
 
 
-const getUsers = async (req, res, next) => {
-    try {
-        const users = await userService.getUsers()
-        res.status(200).json(users);
-    } catch (error) {
-        next(error);
-    }
-}
-
 const getUserById = async (req, res, next) => {
     try {
         const user_id = req.params.id;
@@ -68,7 +59,6 @@ module.exports = {
     register,
     login,
     logout,
-    getUsers,
     getUserById,
-    deletedUserById
+    deletedUserById,
 }

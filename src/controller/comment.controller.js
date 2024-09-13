@@ -2,20 +2,22 @@ const commentService = require('../service/comment.service');
 
 const createComment = async (req, res, next) => {
     try {
-        const commentData = req.body;
-        console.log(commentData);
-        // const commentResponse = await commentService.create(commentData);
+        const request = req.body;
+        console.log(request);
+        const commentResponse = await commentService.create(request);
         res.status(201).json(commentResponse);
     } catch (error) {
         next(error);
     }
 }
 
-const getCommentById = async (req, res, next) => {
+const list = async (req, res, next) => {
     try  {
-        const request  = req.body;
-        const loginResponse = await loginService.
-        res.status()
+        const user_id  = req.params.id;
+        const commentResponse = await commentService.list(user_id)
+        res.status(200).json({
+            data: commentResponse
+        })
     } catch (error) {
         next(error);
     }
@@ -45,7 +47,7 @@ const updateComment = async (req, res, next) => {
 
 module.exports = {
     createComment,
-    getCommentById,
+    list,
     deletedCommentById,
     updateComment
 }

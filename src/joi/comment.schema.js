@@ -1,10 +1,9 @@
 const Joi = require('joi');
 
 const createCommentSchema = Joi.object({
-    userId: Joi.string().required(),
-    videoId: Joi.string().required(),
+    username: Joi.string().min(2).max(100).required(),
     content: Joi.string().min(1).max(1000).required(),
-    content: Joi.string().min(1).max(1000).required(), 
+    // content: Joi.string().min(1).max(1000).required(), 
     // createdAt: Joi.date().iso().default(() => new Date(), 'current date and time'), 
   })
 

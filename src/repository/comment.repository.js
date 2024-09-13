@@ -1,4 +1,24 @@
 const {Comment, User} = require('../../models');
+const { Op } = require('sequelize');
+
+
+const findCommentExist = async ({ username, content}) => {
+    return await Comment.findOne({
+        where: {
+            [Op.or]: [
+                { username },
+                { content }
+            ]
+        },
+        attributes: ['user_id'],
+        logging: console.log
+    })
+}
+
+const create = async (comment) => {
+    return await Comment.create(comment);
+}
+
 
 const findOneById = async (commentId) => {
     return await Comment.findOne({
@@ -21,9 +41,7 @@ const findOneByUserId = async (userId, commentId) =>{
     });
 }
 
-const create = async (comment) => {
-    return await Comment.create(comment);
-}
+
 
 const updateCommentByCommentId = async (commentId, newContent) => {
     const comment = await Comment.findOne({
@@ -43,10 +61,21 @@ const deleteCommentById = async (commentId) => {
     return true
 }
 
+const findAllWithCommentByUserId = async (user_id) => {
+    return await Comment.findAll({
+        where: {
+            user_id : user_id
+        },
+        attributes: ['comment_id', 'video_id', 'content'],
+    })
+}
+
 module.exports = {
+    findCommentExist,
     findOneById,
     findOneByUserId,
     create,
     updateCommentByCommentId,
-    deleteCommentById
+    deleteCommentById,
+    findAllWithCommentByUserId
 }
