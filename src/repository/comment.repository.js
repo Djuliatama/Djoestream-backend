@@ -1,6 +1,7 @@
 const {Comment, User} = require('../../models');
 const { Op } = require('sequelize');
-const { comment_id } = require('../service/comment.service');
+// const commentService = require('../service/comment.service');
+// const { comment_id } = require('../service/comment.service');
 
 
 const findCommentExist = async ({content}) => {
