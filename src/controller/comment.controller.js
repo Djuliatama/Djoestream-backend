@@ -23,11 +23,13 @@ const list = async (req, res, next) => {
     }
 }
 
-const deletedCommentById = async (req, res, next) => {
+const removeCommentById = async (req, res, next) => {
     try {
-        const commentId = req.comment.id;
-        const deleteResponse = await commentService.deleted(commentId);
+        const comment_id = req.params.id;
+        console.log(comment_id)
+        const deleteResponse = await commentService.remove(comment_id);
         res.status(200).json(deleteResponse);
+        console.log('return', deleteResponse);
     } catch (error) {
         next(error);
     }
@@ -48,6 +50,6 @@ const updateComment = async (req, res, next) => {
 module.exports = {
     createComment,
     list,
-    deletedCommentById,
+    removeCommentById,
     updateComment
 }

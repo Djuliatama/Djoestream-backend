@@ -1,5 +1,6 @@
 const { User } = require('../../models');
 const { Op } = require('sequelize');
+const { removeCommentById } = require('../controller/comment.controller');
 
 const findOneById = async (user_id) => {
     return await User.findOne({

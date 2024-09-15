@@ -15,14 +15,23 @@ const findCommentExist = async ({ username, content}) => {
     })
 }
 
+const findCommentExistById = async ({ comment_id }) => {
+    return await Comment.findOne({
+        where: {
+            comment_id: comment_id
+        },
+    })
+}
+
 const create = async (comment) => {
     return await Comment.create(comment);
 }
 
 
-const findOneById = async (commentId) => {
+const findOneById = async (comment_id) => {
     return await Comment.findOne({
-        where: {id: commentId}
+        where: {comment_id:comment_id},
+        attributes: [ 'comment_id', 'video_id', 'user_id', 'username', 'content'],
     })
 
 }
@@ -45,7 +54,7 @@ const findOneByUserId = async (userId, commentId) =>{
 
 const updateCommentByCommentId = async (commentId, newContent) => {
     const comment = await Comment.findOne({
-        where: {id: commentId}
+        where: {id: commentId},
     });
 
     comment.content = newContent;
@@ -53,10 +62,12 @@ const updateCommentByCommentId = async (commentId, newContent) => {
     return comment;
 }
 
-const deleteCommentById = async (commentId) => {
+const deleteCommentById = async (comment_id) => {
     const comment = await Comment.findOne({
-        where: { id: commentId }
+        where: { comment_id: comment_id },
+        attributes: [ 'comment_id', 'video_id', 'user_id', 'username', 'content']
     });
+    console.log(comment);
     await comment.destroy();
     return true
 }
@@ -77,5 +88,6 @@ module.exports = {
     create,
     updateCommentByCommentId,
     deleteCommentById,
-    findAllWithCommentByUserId
+    findAllWithCommentByUserId,
+    findCommentExistById
 }

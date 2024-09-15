@@ -33,17 +33,18 @@ const commentExist = async ({ username, content}) => {
     }
 }
 
+const commentExistbyId = async({comment_id}) => {
+    const comment = await commentRepository.findCommentExistById({comment_id});
+    if (comment) {
+        throw new ResponseError(409, 'Comment already exist')
+    }
+}
+
 const create = async (request) => {
     const comment = validate(createCommentSchema, request);
     console.log(comment)
-    // await findCommentExist(comment.id);
     await commentExist({ username: comment.username, content: comment.content});
-    // comment.id = uuidv4();
-    // await userExist({ username: user.username, email: user.email });
     await commentRepository.create(comment);
-    // await commentRepository.create(comment);
-    // const createdComment = await commentRepository.create(comment);
-    // return await commentRepository.findOneInactiveById(createdComment.id)
 };
 
 
@@ -61,15 +62,18 @@ const update = async (commentId, updateData) => {
     return comment;
 };
 
-const remove = async (userId, commentId) => {
-    commentId = validate(getCommentValidation, commentId);
-    commentId = await checkCommentMustExist(userId,commentId);
-
-    const comment = await get(userId,commentId);
+const remove = async (comment_id) => {
+    comment_id = validate(getCommentValidation, comment_id);
+    // comment_id = await commentExist(comment_id);
+    comment_id = await commentExistbyId(comment_id);
+ 
+    const comment = await get(comment_id);
+    await commentRepository.deleteCommentById(comment_id);
 
     if (!comment) {
         throw new ResponseError('Comment not found');
     }
+    
     await comment.remove();
     return { success: true };
 }
