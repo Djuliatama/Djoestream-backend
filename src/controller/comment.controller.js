@@ -13,8 +13,8 @@ const createComment = async (req, res, next) => {
 
 const list = async (req, res, next) => {
     try  {
-        const user_id  = req.params.id;
-        const commentResponse = await commentService.list(user_id)
+        const username = req.params;
+        const commentResponse = await commentService.list(username)
         res.status(200).json({
             data: commentResponse
         })
@@ -37,9 +37,10 @@ const removeCommentById = async (req, res, next) => {
 
 const updateComment = async (req, res, next) => {
     try {
-        const commentId = req.params.id;
-        const {text} = body.req;
-        const updatedComment = await commentService.findByIdAndUpdate(commentId,{ text },{ new: true });
+        const comment_id = req.params.id;
+        const request = req.body;
+        console.log('ini request' , request);
+        const updatedComment = await commentService.update(comment_id, request);
         res.status(200).json(updatedComment);
     } catch (error) {
         next(error);

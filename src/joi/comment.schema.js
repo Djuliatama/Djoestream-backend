@@ -15,11 +15,6 @@ const updateCommentSchema = Joi.object({
 
 const getCommentValidation = Joi.string().required();
 
-// const getCommentValidation = Joi.object({
-//     commment_id: Joi.string().min(1).max(1000),
-//     username: Joi.string().min(1).max(1000),
-//     content: Joi.string().min(1).max(1000)
-// })
 
 
 module.exports = {

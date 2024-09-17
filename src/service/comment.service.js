@@ -49,12 +49,6 @@ const commentExistbyId = async({comment_id}) => {
 
 const remove = async (comment_id) => {
     comment_id = validate(getCommentValidation, comment_id);
-    console.log(comment_id)
-    comment = 
-    // comment_id = await commentExistbyId(comment_id);
-    console.log(comment_id)
-    // const comment = await get(comment_id);
-    console.log('ini comment', comment_id)
     await commentRepository.deleteCommentById(comment_id);
     console.log(comment_id)
 
@@ -66,22 +60,25 @@ const remove = async (comment_id) => {
     return { success: true };
 }
 
-const update = async (commentId, updateData) => {
-    const validatedUpdatedComment = validate(updateCommentSchema, updateData);
+const update = async (comment_id, request) => {
+    const comment = validate(updateCommentSchema, request);
+    comment_id = validate(getCommentValidation, comment_id);
 
-    const comment = await commentRepository.findById(commentId);
-    
-    if(!comment) {
+    const updateComment = await commentRepository.findCommentById(comment_id);
+
+    if (!updateComment) {
         throw new ResponseError('Comment not found');
     }
-    await commentRepository.updateCommentById(comment, validatedUpdatedComment);
+
+    updateComment.content = comment.content;
     comment.update_at = Date.now();
-    await comment.save();
-    return comment;
+    await updateComment.save()
+    return updateComment
+  
 };
 
-const list = async (user_id) => {
-    const commentData = await commentRepository.findAllWitCommentByUserId(user_id);
+const list = async (username) => {
+    const commentData = await commentRepository.getCommentByUsername(username);
      return commentData.map( commentData => mapToCommentResponse(commentData));
 }
 
