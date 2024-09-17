@@ -18,14 +18,6 @@ const mapToCommentResponse = (commentData) => {
     )
 }
 
-// const userExist = async ({ username, email }) => {
-
-//     const user = await userRepository.findUserExist({ username, email });
-//     if (user) {
-//         throw new ResponseError(409, "Username already exist")
-//     }
-// }
-
 const commentExist = async ({content}) => {
     const comment = await commentRepository.findCommentExist({content});
     if (comment) {
@@ -77,10 +69,20 @@ const update = async (comment_id, request) => {
   
 };
 
-const list = async (username) => {
-    const commentData = await commentRepository.getCommentByUsername(username);
-     return commentData.map( commentData => mapToCommentResponse(commentData));
+const list = async (user_id) => {
+    const comments = await commentRepository.findAllCommentByUserId(user_id);
+
+    return comments.map(comment => new CommentResponse(
+        comment.comment_id,
+        comment.video.id,
+        comment.user_id,
+        comment.content
+    ));
+    // const commentData = await commentRepository.getCommentByUsername(username);
+    //  return commentData.map( commentData => mapToCommentResponse(commentData));
 }
+
+
 
 module.exports = {
     create,

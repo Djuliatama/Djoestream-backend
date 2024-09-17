@@ -42,6 +42,17 @@ const deleteCommentById = async (comment_id) => {
     return true
 }
 
+const findAllCommentByUserId = async (user_id) => {
+    return await Comment.findAll({
+        where: { user_id: user_id},
+        include: [{
+            model: User,
+            as: 'user',
+            attributes: ['user_id', 'username', 'email']
+        }]
+    })
+}
+
 const getCommentByUsername = async (username) => {
     const user = await User.findOne({ 
         where: {username}
@@ -88,23 +99,21 @@ const updateCommentByCommentId = async (comment_id, newContent) => {
 }
 
 
-const findAllWithCommentByUserId = async (user_id) => {
-    return await Comment.findAll({
-        where: {
-            user_id : user_id
-        },
-        attributes: ['comment_id', 'video_id', 'content'],
-    })
-}
+// const findAllWithCommentByUserId = async (user_id) => {
+//     return await Comment.findAll({
+//         where: {
+//             user_id : user_id
+//         },
+//         attributes: ['comment_id', 'video_id', 'content'],
+//     })
+// }
 
 module.exports = {
     findCommentExist,
     commentIdExist,
     create, 
     deleteCommentById,
-    getCommentByUsername,
     findCommentById,
-    findOneByUserId,
-    updateCommentByCommentId,
-    findAllWithCommentByUserId
+    findAllCommentByUserId,
+    updateCommentByCommentId
 }

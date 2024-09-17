@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Comment, {
+        foreignKey: 'user_id',
+        onDelete: 'RESTRICT',
+        onUpdate: 'RESTRICT',
+        as: 'comments'
+      })
     }
   }
   User.init({
