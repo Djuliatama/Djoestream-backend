@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Video.init({
-    video_id: DataTypes.INTEGER,
+    video_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     user_id: DataTypes.INTEGER,
     title: DataTypes.STRING,
     video_url: DataTypes.STRING,
@@ -23,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Video',
+    tableName: 'Video',
+    timestamps: false
   });
   return Video;
 };

@@ -1,16 +1,24 @@
 const videoService = require ('../service/video.service');
-const multer = require('multer');
-const {ResponseError} = require('../error/response.error');
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+// const multer = require('multer');
 
-const upload = multer({
-    storage:storage,
-    
-})
-
-exports.uploadVideo = async (req, res) => {
+const uploadVideo = async (req,res, next) => {
     try {
-        const result = await videoService.uploadVideo(req.file);
-        res.send
+        const request = {
+            title: req.body.title,
+            filename: req.file.filename
+        }
+
+        const video = await videoService.saveVideo(request);
+        res.status(200).json(video)
+    } catch (error) {
+        next(error);
     }
+
+} 
+
+module.exports =  {
+    uploadVideo
 }
+
+
