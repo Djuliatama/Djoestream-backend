@@ -12,3 +12,4 @@ commentRouter.get('/:username', commentController.list);
 module.exports = {
     commentRouter
 }
+
