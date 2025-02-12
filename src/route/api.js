@@ -30,3 +30,4 @@ router.use('/api/v1/videos', videoRouter);
 module.exports = {
     router
 };
+
